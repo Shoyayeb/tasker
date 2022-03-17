@@ -3,6 +3,7 @@ import './App.css';
 import NavBar from './Components/NavBar/NavBar';
 import NotFound from './Components/NotFound/NotFound';
 import Root from './Components/Root/Root';
+import LoginRegister from './Components/LoginRegister/LoginRegister/LoginRegister';
 function App() {
   return (
     <Router>
@@ -10,6 +11,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Root />} />
         <Route path="/home" element={<Root />} />
+        <Route path="/signin" element={<LoginRegister />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>
