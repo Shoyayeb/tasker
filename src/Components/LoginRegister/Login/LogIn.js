@@ -121,7 +121,7 @@ import useAuth from "../../../Hooks/useAuth";
 
 const LogIn = () => {
     const [loginData, setLoginData] = useState({});
-    const { setIsLogin } = useAuth();
+    const { setIsLogin, setError, loginUserByEmail } = useAuth();
     const handleOnChange = (e) => {
         const field = e.target.name;
         const value = e.target.value;
@@ -134,16 +134,17 @@ const LogIn = () => {
         e.preventDefault();
         console.log(loginData);
         if (loginData === {} || !loginData.email || !loginData.password) {
-            // setError("Please Enter Your Email And Password");
+            setError("Please Enter Your Email And Password");
         } else {
             console.log("creating");
-            // loginUserByEmail(loginData.email, loginData.password);
+            loginUserByEmail(loginData.email, loginData.password);
         }
     };
     return (
         <div>
             <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
                 <TextField
+                    onChange={handleOnChange}
                     margin="normal"
                     required
                     fullWidth
@@ -154,6 +155,7 @@ const LogIn = () => {
                     autoFocus
                 />
                 <TextField
+                    onChange={handleOnChange}
                     margin="normal"
                     required
                     fullWidth

@@ -57,11 +57,11 @@ export const secondaryListItems = (
             </ListItemIcon>
             <ListItemText primary="Current month" />
         </ListItemButton>
-        <ListItemButton>
+        <ListItemButton to="/signin" component={Link}>
             <ListItemIcon>
                 <AssignmentIcon />
             </ListItemIcon>
-            <ListItemText primary="Last quarter" />
+            <ListItemText primary="Login" />
         </ListItemButton>
         <ListItemButton>
             <ListItemIcon>
