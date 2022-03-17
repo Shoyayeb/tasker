@@ -1,6 +1,6 @@
+import { Task } from '@mui/icons-material';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import BarChartIcon from '@mui/icons-material/BarChart';
-import DashboardIcon from '@mui/icons-material/Dashboard';
 import LayersIcon from '@mui/icons-material/Layers';
 import PeopleIcon from '@mui/icons-material/People';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
@@ -13,11 +13,11 @@ import { Link } from 'react-router-dom';
 
 export const mainListItems = (
     <React.Fragment>
-        <ListItemButton>
+        <ListItemButton to="/" component={Link}>
             <ListItemIcon>
-                <DashboardIcon />
+                <Task />
             </ListItemIcon>
-            <ListItemText primary="Dashboard" />
+            <ListItemText primary="Tasks" />
         </ListItemButton>
         <ListItemButton>
             <ListItemIcon>
@@ -51,12 +51,12 @@ export const secondaryListItems = (
         <ListSubheader component="div" inset>
             Saved reports
         </ListSubheader>
-        <Link to="/home" component="ListItemButton">
+        <ListItemButton to="/home" component={Link}>
             <ListItemIcon>
                 <AssignmentIcon />
             </ListItemIcon>
             <ListItemText primary="Current month" />
-        </Link>
+        </ListItemButton>
         <ListItemButton>
             <ListItemIcon>
                 <AssignmentIcon />
