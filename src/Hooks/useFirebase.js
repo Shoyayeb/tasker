@@ -1,4 +1,3 @@
-import axios from "axios";
 import {
   createUserWithEmailAndPassword,
   getAuth,
@@ -16,16 +15,19 @@ const useFirebase = () => {
   const [modal, setModal] = useState(false);
   const [error, setError] = useState("");
   const [admin, setAdmin] = useState({});
+  const [isLogin, setIsLogin] = useState(true);
 
   const auth = getAuth();
   auth.useDeviceLanguage();
 
   // create user with email
-  const createUserByEmail = (email, password, name) => {
+  const createUserByEmail = (email, password, firstName, lastName) => {
     setIsLoading(true);
     return createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
+        console.log(userCredential.user);
         const uid = userCredential.user.uid;
+        const name = firstName + " " + lastName;
         const photoURL = "https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png";
         const newUser = { email, displayName: name, photoURL, uid };
         setUser(newUser);
@@ -35,7 +37,6 @@ const useFirebase = () => {
           displayName: name,
           photoURL: "https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png",
         });
-        saveUser(email, name, "post");
       })
       .catch((error) => {
         setError(error.message);
@@ -68,7 +69,6 @@ const useFirebase = () => {
       return signInWithPopup(auth, googleProvider)
         .then((result) => {
           setError("");
-          saveUser(result.user.email, result.user.displayName, "put");
         })
         .catch((error) => {
           setError(error.message);
@@ -81,7 +81,6 @@ const useFirebase = () => {
       return signInWithPopup(auth, githubProvider)
         .then((result) => {
           setError("");
-          saveUser(result.user.email, result.user.displayName, "put");
         })
         .catch((error) => {
           setError(error.message);
@@ -108,13 +107,6 @@ const useFirebase = () => {
       .finally(() => setIsLoading(false));
   };
 
-  // saving admin to DB
-  const saveUser = (email, displayName, method) => {
-    const url = "https://o-clock.herokuapp.com/adduser";
-    const data = { email, displayName };
-    axios({ method, url, data });
-  };
-
   // managing user
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -130,19 +122,14 @@ const useFirebase = () => {
     return () => unsubscribe;
   }, [auth]);
 
-  useEffect(() => {
-    const url = `https://o-clock.herokuapp.com/users/${user.email}`;
-    axios.get(url).then((data) => {
-      setAdmin(data.data);
-    });
-  }, [user]);
-
   return {
     user,
     error,
     setError,
     loading,
     setIsLoading,
+    isLogin,
+    setIsLogin,
     modal,
     admin,
     setAdmin,

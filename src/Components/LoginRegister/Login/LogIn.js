@@ -117,9 +117,11 @@ import Grid from "@mui/material/Grid";
 import Link from "@mui/material/Link";
 import TextField from "@mui/material/TextField";
 import React, { useState } from "react";
+import useAuth from "../../../Hooks/useAuth";
 
 const LogIn = () => {
     const [loginData, setLoginData] = useState({});
+    const { setIsLogin } = useAuth();
     const handleOnChange = (e) => {
         const field = e.target.name;
         const value = e.target.value;
@@ -180,8 +182,8 @@ const LogIn = () => {
                         </Link>
                     </Grid>
                     <Grid item>
-                        <Link href="#" variant="body2">
-                            {"Don't have an account? Sign Up"}
+                        <Link href="#" variant="body2" onClick={() => setIsLogin(false)}>
+                            Don't have an account? Sign Up
                         </Link>
                     </Grid>
                 </Grid>

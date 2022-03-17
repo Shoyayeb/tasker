@@ -5,15 +5,11 @@ import Grid from "@mui/material/Grid";
 import Link from "@mui/material/Link";
 import TextField from "@mui/material/TextField";
 import React, { useState } from "react";
+import useAuth from "../../../Hooks/useAuth";
 
 const Register = (props) => {
     const [registerData, setRegisterData] = useState({});
-    // const { setError, setIsLogin, createUserByEmail } = useAuth();
-    const [gender, setGender] = useState("");
-
-    const handleChange = (event) => {
-        setGender(event.target.value);
-    };
+    const { setError, setIsLogin, createUserByEmail } = useAuth();
     // console.log(user);
     const handleOnChange = (e) => {
         const field = e.target.name;
@@ -31,20 +27,18 @@ const Register = (props) => {
             !registerData.email ||
             !registerData.password ||
             !registerData.firstName ||
-            !registerData.lastName ||
-            !registerData.phone
+            !registerData.lastName
         ) {
             console.log("notEntered", registerData);
-            // setError("Please enter your information correctly");
+            setError("Please enter your information correctly");
         } else {
             console.log("creating");
-            // createUserByEmail(
-            //     registerData.email,
-            //     registerData.password,
-            //     registerData.firstName,
-            //     registerData.lastName,
-            //     registerData.phone
-            // );
+            createUserByEmail(
+                registerData.email,
+                registerData.password,
+                registerData.firstName,
+                registerData.lastName
+            );
         }
     };
 
@@ -54,6 +48,7 @@ const Register = (props) => {
                 <Grid container spacing={2}>
                     <Grid item xs={12} sm={6}>
                         <TextField
+                            onChange={handleOnChange}
                             autoComplete="given-name"
                             name="firstName"
                             required
@@ -65,6 +60,7 @@ const Register = (props) => {
                     </Grid>
                     <Grid item xs={12} sm={6}>
                         <TextField
+                            onChange={handleOnChange}
                             required
                             fullWidth
                             id="lastName"
@@ -75,6 +71,7 @@ const Register = (props) => {
                     </Grid>
                     <Grid item xs={12}>
                         <TextField
+                            onChange={handleOnChange}
                             required
                             fullWidth
                             id="email"
@@ -85,6 +82,7 @@ const Register = (props) => {
                     </Grid>
                     <Grid item xs={12}>
                         <TextField
+                            onChange={handleOnChange}
                             required
                             fullWidth
                             name="password"
@@ -115,7 +113,7 @@ const Register = (props) => {
                     <Link
                         variant="body2"
                         component="button"
-                    // onClick={() => setIsLogin(true)}
+                        onClick={() => setIsLogin(true)}
                     >
                         Already have an account? Sign in
                     </Link>

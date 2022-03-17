@@ -6,11 +6,13 @@ import { Avatar, Container, CssBaseline, IconButton } from "@mui/material";
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
-import React, { useState } from 'react';
+import React from 'react';
+import useAuth from "../../../Hooks/useAuth";
 import LogIn from '../Login/LogIn';
 import Register from "../Register/Register";
 const LoginRegister = () => {
-    const [isLogin, setIsLogin] = useState(false);
+    const { isLogin, socialSignIn, user } = useAuth();
+    console.log(user);
     return (
         <Container component="main" maxWidth="sm">
             <CssBaseline />
@@ -37,7 +39,7 @@ const LoginRegister = () => {
                         aria-label="google"
                         color="error"
                         sx={{ width: "75px", height: "75px", boxShadow: 2 }}
-                    // onClick={() => socialSignIn("google")}
+                        onClick={() => socialSignIn("google")}
                     >
                         <GoogleIcon fontSize="large"></GoogleIcon>
                     </IconButton>
