@@ -9,8 +9,7 @@ function App() {
       <AuthProvider>
         <Router>
           <Routes>
-            <Route path="/" element={<Root />} />
-            <Route path="tasks/*" element={<Root />} />
+            <Route path="/*" element={<Root />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Router>

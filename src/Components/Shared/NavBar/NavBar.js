@@ -3,20 +3,12 @@ import MenuIcon from '@mui/icons-material/Menu';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import MuiAppBar from '@mui/material/AppBar';
 import Badge from '@mui/material/Badge';
-import Box from '@mui/material/Box';
-import Container from '@mui/material/Container';
-import CssBaseline from '@mui/material/CssBaseline';
 import IconButton from '@mui/material/IconButton';
-import { createTheme, styled, ThemeProvider } from '@mui/material/styles';
+import { styled } from '@mui/material/styles';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import * as React from 'react';
-import Footer from '../Footer/Footer';
 import SideBar from '../SideBar/SideBar';
-
-
-
-
 
 const drawerWidth = 240;
 
@@ -38,82 +30,53 @@ const AppBar = styled(MuiAppBar, {
     }),
 }));
 
-
-
-const mdTheme = createTheme();
-
-function DashboardContent() {
+export default function NavBar() {
     const [open, setOpen] = React.useState(true);
     const toggleDrawer = () => {
         setOpen(!open);
     };
-
     return (
-        <ThemeProvider theme={mdTheme}>
-            <Box sx={{ display: 'flex' }}>
-                <CssBaseline />
-                <AppBar position="absolute" open={open}>
-                    <Toolbar
-                        sx={{
-                            pr: '24px', // keep right padding when drawer closed
-                        }}
-                    >
-                        <IconButton
-                            edge="start"
-                            color="inherit"
-                            aria-label="open drawer"
-                            onClick={toggleDrawer}
-                            sx={{
-                                marginRight: '36px',
-                                ...(open && { display: 'none' }),
-                            }}
-                        >
-                            <MenuIcon />
-                        </IconButton>
-                        <Typography
-                            component="h1"
-                            variant="h6"
-                            color="inherit"
-                            noWrap
-                            sx={{ flexGrow: 1 }}
-                        >
-                            Tasker
-                        </Typography>
-                        <IconButton color="inherit">
-                            <Badge badgeContent={4} color="secondary">
-                                <NotificationsIcon />
-                            </Badge>
-                        </IconButton>
-                        <IconButton color="inherit">
-                            <Badge badgeContent={4} color="secondary">
-                                <VerifiedUserRounded />
-                            </Badge>
-                        </IconButton>
-                    </Toolbar>
-                </AppBar>
-                <SideBar open={open} toggleDrawer={toggleDrawer} />
-                <Box
-                    component="main"
+        <div>
+            <AppBar position="absolute" open={open}>
+                <Toolbar
                     sx={{
-                        backgroundColor: (theme) =>
-                            theme.palette.mode === 'light'
-                                ? theme.palette.grey[100]
-                                : theme.palette.grey[900],
-                        flexGrow: 1,
-                        height: '100vh',
-                        overflow: 'auto',
+                        pr: '24px', // keep right padding when drawer closed
                     }}
                 >
-                    <Toolbar />
-                    <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-                        <Footer sx={{ pt: 4 }} />
-                    </Container>
-                </Box>
-            </Box>
-        </ThemeProvider>
+                    <IconButton
+                        edge="start"
+                        color="inherit"
+                        aria-label="open drawer"
+                        onClick={toggleDrawer}
+                        sx={{
+                            marginRight: '36px',
+                            ...(open && { display: 'none' }),
+                        }}
+                    >
+                        <MenuIcon />
+                    </IconButton>
+                    <Typography
+                        component="h1"
+                        variant="h6"
+                        color="inherit"
+                        noWrap
+                        sx={{ flexGrow: 1 }}
+                    >
+                        Tasker
+                    </Typography>
+                    <IconButton color="inherit">
+                        <Badge badgeContent={4} color="secondary">
+                            <NotificationsIcon />
+                        </Badge>
+                    </IconButton>
+                    <IconButton color="inherit">
+                        <Badge badgeContent={4} color="secondary">
+                            <VerifiedUserRounded />
+                        </Badge>
+                    </IconButton>
+                </Toolbar>
+            </AppBar>
+            <SideBar open={open} toggleDrawer={toggleDrawer} />
+        </div>
     );
-}
-
-export default function NavBar() {
-    return <DashboardContent />;
 }

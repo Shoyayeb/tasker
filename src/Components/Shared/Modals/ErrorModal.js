@@ -24,7 +24,7 @@ export default function ErrorModal() {
         <div>
             <Modal
                 keepMounted
-                open={modal}
+                open={true}
                 onClose={handleClose}
                 aria-labelledby="keep-mounted-modal-title"
                 aria-describedby="keep-mounted-modal-description"
