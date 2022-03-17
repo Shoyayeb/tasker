@@ -8,8 +8,9 @@ import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import React, { useState } from 'react';
 import LogIn from '../Login/LogIn';
+import Register from "../Register/Register";
 const LoginRegister = () => {
-    const [isLogin, setIsLogin] = useState(true);
+    const [isLogin, setIsLogin] = useState(false);
     return (
         <Container component="main" maxWidth="sm">
             <CssBaseline />
@@ -28,7 +29,7 @@ const LoginRegister = () => {
                 </Typography>
                 {/* forms */}
 
-                {isLogin ? <LogIn /> : "<RegisterForm />"}
+                {isLogin ? <LogIn /> : <Register />}
 
                 {/* forms ends */}
                 <Stack direction="row" spacing={5} sx={{ marginTop: 3 }}>
