@@ -6,10 +6,33 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
+import axios from 'axios';
+import { useState } from 'react';
+import useAuth from '../../../Hooks/useAuth';
 
 const AddTaskModal = ({ open, setOpen }) => {
+    const [taskDetails, setTaskDetails] = useState({});
+    const { user } = useAuth();
     const handleClose = () => {
         setOpen(false);
+    };
+    const handleTaskSubmit = () => {
+        taskDetails.uid = user.uid;
+        taskDetails.time = new Date().toLocaleTimeString();
+        taskDetails.date = new Date().toDateString()
+        console.log(taskDetails);
+        axios
+            .post("http://localhost:4000/addtask", taskDetails)
+            .then(function (res) {
+                console.log(res);
+                setTaskDetails({});
+            })
+            .catch(function (error) {
+                console.log(error);
+                setOpen(false);
+                setTaskDetails({});
+            });
+
     };
 
     return (
@@ -27,11 +50,12 @@ const AddTaskModal = ({ open, setOpen }) => {
                         type="text"
                         fullWidth
                         variant="standard"
+                        onChange={(e) => taskDetails.task = e.target.value}
                     />
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleClose}>Cancel</Button>
-                    <Button onClick={handleClose}>Add</Button>
+                    <Button onClick={handleTaskSubmit}>Add</Button>
                 </DialogActions>
             </Dialog>
         </div>
