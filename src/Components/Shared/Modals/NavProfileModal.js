@@ -9,13 +9,14 @@ import useAuth from "./../../../Hooks/useAuth";
 
 const NavProfileModal = () => {
     const { signOutUser, user } = useAuth();
+    const date = new Date().toDateString();
     return (
         <div>
             <Card sx={{ minWidth: 275 }}>
                 <CardHeader
                     avatar={<Avatar aria-label={user.displayName} src={user?.photoURL || null}>S</Avatar>}
                     title={user.displayName}
-                    subheader="September 14, 2016"
+                    subheader={date}
                 />
                 <CardContent></CardContent>
                 <CardActions>

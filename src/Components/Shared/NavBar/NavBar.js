@@ -12,7 +12,7 @@ import useAuth from '../../../Hooks/useAuth';
 import NavProfileModal from '../Modals/NavProfileModal';
 import SideBar from '../SideBar/SideBar';
 
-const drawerWidth = 240;
+const drawerWidth = 250;
 
 const AppBar = styled(MuiAppBar, {
     shouldForwardProp: (prop) => prop !== 'open',
@@ -78,7 +78,7 @@ export default function NavBar() {
                         Tasker
                     </Typography>
                     {
-                        user.uid ? <div>
+                        user.uid ? <>
                             <IconButton color="inherit">
                                 <Badge badgeContent={4} color="secondary">
                                     <NotificationsIcon />
@@ -105,11 +105,11 @@ export default function NavBar() {
                             >
                                 <NavProfileModal></NavProfileModal>
                             </Menu>
-                        </div> : "login first"
+                        </> : "login first"
                     }
                 </Toolbar>
             </AppBar>
-            <SideBar open={open} toggleDrawer={toggleDrawer} />
+            <SideBar open={open} toggleDrawer={toggleDrawer} drawerWidth={drawerWidth} />
         </div >
     );
 }
