@@ -5,9 +5,15 @@ import Divider from '@mui/material/Divider';
 import MuiDrawer from '@mui/material/Drawer';
 import List from '@mui/material/List';
 import React from 'react';
-import { mainListItems, secondaryListItems } from '../NavBar/listItems';
+import { mainListItems } from '../NavBar/listItems';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import { LogoutOutlined } from '@mui/icons-material';
+import useAuth from '../../../Hooks/useAuth';
 
 const SideBar = ({ open, toggleDrawer, drawerWidth }) => {
+    const { signOutUser } = useAuth();
     const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(
         ({ theme, open }) => ({
             '& .MuiDrawer-paper': {
@@ -51,9 +57,14 @@ const SideBar = ({ open, toggleDrawer, drawerWidth }) => {
             <List component="nav">
                 {mainListItems}
                 <Divider sx={{ my: 3 }} />
-                {secondaryListItems}
+                <ListItemButton onClick={() => signOutUser()}>
+                    <ListItemIcon>
+                        <LogoutOutlined />
+                    </ListItemIcon>
+                    <ListItemText primary="Log out" />
+                </ListItemButton>
             </List>
-        </Drawer>
+        </Drawer >
     );
 };
 

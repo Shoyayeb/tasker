@@ -5,7 +5,7 @@ import Tasks from './../Tasks/Tasks';
 import AddTaskModal from './../Shared/Modals/AddTaskModal';
 
 const OverView = () => {
-    const [open, setOpen] = React.useState(true);
+    const [open, setOpen] = React.useState(false);
     const fabStyle = {
         position: 'absolute',
         bottom: 16,

@@ -18,21 +18,23 @@ const AddTaskModal = ({ open, setOpen }) => {
     };
     const handleTaskSubmit = () => {
         taskDetails.uid = user.uid;
-        taskDetails.time = new Date().toLocaleTimeString();
-        taskDetails.date = new Date().toDateString()
+        taskDetails.Done = false;
+        taskDetails.Importance = false;
+        taskDetails.Time = new Date().toLocaleTimeString();
+        taskDetails.Date = new Date().toDateString()
         console.log(taskDetails);
         axios
-            .post("http://localhost:4000/addtask", taskDetails)
+            .post("https://tasker-web0.herokuapp.com/addtask", taskDetails)
             .then(function (res) {
                 console.log(res);
                 setTaskDetails({});
+                setOpen(false);
             })
             .catch(function (error) {
                 console.log(error);
                 setOpen(false);
                 setTaskDetails({});
             });
-
     };
 
     return (
