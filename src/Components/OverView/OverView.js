@@ -9,7 +9,7 @@ import useAuth from '../../Hooks/useAuth';
 const OverView = () => {
     const [open, setOpen] = useState(false);
     const [taskDetails, setTaskDetails] = useState({});
-    const [rows, setRows] = useState(JSON.parse(window.localStorage.rows));
+    const [tasks, setTasks] = useState([]);
     const { user } = useAuth();
     const fabStyle = {
         position: 'absolute',
@@ -45,9 +45,9 @@ const OverView = () => {
     useEffect(() => {
         const url = `https://tasker-web0.herokuapp.com/tasks/${user.uid}`;
         axios.get(url).then((data) => {
-            setRows(data.data);
+            setTasks(data.data);
             window.localStorage.setItem("rows", JSON.stringify(data.data))
-            console.log(rows, '====================================', data.data);
+            console.log(tasks, '====================================', data.data);
         });
     }, []);
     const handleRemoveTask = (id) => {
@@ -58,8 +58,8 @@ const OverView = () => {
             .then((res) => res.json())
             .then((data) => {
                 if (data.deletedCount > 0) {
-                    const remaining = rows.filter((restTask) => restTask._id !== id);
-                    setRows(remaining);
+                    const remaining = tasks.filter((restTask) => restTask._id !== id);
+                    setTasks(remaining);
                 }
             });
     }
@@ -82,7 +82,7 @@ const OverView = () => {
             <Fab sx={fab.sx} aria-label={fab.label} color={fab.color} onClick={() => setOpen(true)}>
                 {fab.icon}
             </Fab>
-            <Tasks handleRemoveTask={handleRemoveTask} rows={rows} />
+            <Tasks handleRemoveTask={handleRemoveTask} tasks={tasks} />
             <AddTaskModal open={open} setOpen={setOpen} handleTaskSubmit={handleTaskSubmit} taskDetails={taskDetails} />
         </Box>
     );

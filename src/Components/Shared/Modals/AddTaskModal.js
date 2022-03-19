@@ -12,7 +12,11 @@ const AddTaskModal = ({ open, setOpen, handleTaskSubmit, taskDetails }) => {
     const handleClose = () => {
         setOpen(false);
     };
-
+    const handleKeyDown = (e) => {
+        if (e.key === 'Enter') {
+            handleTaskSubmit()
+        }
+    }
     return (
         <div>
 
@@ -27,8 +31,10 @@ const AddTaskModal = ({ open, setOpen, handleTaskSubmit, taskDetails }) => {
                         margin="dense"
                         label="Ex: Drink Water"
                         type="text"
+                        helperText="Press enter to add"
                         fullWidth
                         variant="standard"
+                        onKeyDown={(e) => handleKeyDown(e)}
                         onChange={(e) => taskDetails.Task = e.target.value}
                     />
                 </DialogContent>

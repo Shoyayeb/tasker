@@ -9,9 +9,9 @@ import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import { useState } from 'react';
 import { IconButton, Skeleton, Tooltip } from '@mui/material';
-import { Delete } from '@mui/icons-material';
+import { Done } from '@mui/icons-material';
 
-const Tasks = ({ handleRemoveTask, rows }) => {
+const Tasks = ({ handleRemoveTask, tasks }) => {
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
     const handleChangePage = (event, newPage) => {
@@ -30,6 +30,9 @@ const Tasks = ({ handleRemoveTask, rows }) => {
                     <TableHead>
                         <TableRow>
                             <TableCell align="left" >
+                                Complete
+                            </TableCell>
+                            <TableCell align="left" >
                                 Task
                             </TableCell>
                             <TableCell align="right" colSpan={1}>
@@ -37,21 +40,20 @@ const Tasks = ({ handleRemoveTask, rows }) => {
                             </TableCell>
                         </TableRow>
                     </TableHead>
-                    {rows ? <TableBody style={{}}>
-                        {rows
-                            .map((row) => {
+                    {tasks ? <TableBody style={{}}>
+                        {tasks
+                            .map((task) => {
                                 return (
-                                    <TableRow hover role="checkbox" tabIndex={-1} key={row._id}>
+                                    <TableRow hover role="checkbox" tabIndex={-1} key={task._id}>
                                         <TableCell align="left" >
                                             <Tooltip title="Delete">
-                                                <IconButton onClick={() => handleRemoveTask(row._id)}>
-                                                    <Delete />
+                                                <IconButton onClick={() => handleRemoveTask(task._id)}>
+                                                    <Done />
                                                 </IconButton>
                                             </Tooltip>
                                         </TableCell>
-                                        <TableCell align="left">{row.Task}</TableCell>
-                                        <TableCell align="right">{row.Time.slice(0, 5)}</TableCell>
-
+                                        <TableCell align="left">{task.Task}</TableCell>
+                                        <TableCell align="right">{task.Time.slice(0, 5)}</TableCell>
                                     </TableRow>
                                 );
                             })}
@@ -64,7 +66,7 @@ const Tasks = ({ handleRemoveTask, rows }) => {
             <TablePagination
                 rowsPerPageOptions={[10, 25, 100]}
                 component="div"
-                count={rows.length}
+                count={tasks.length}
                 rowsPerPage={rowsPerPage}
                 page={page}
                 onPageChange={handleChangePage}
