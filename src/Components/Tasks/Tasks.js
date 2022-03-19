@@ -1,115 +1,76 @@
-import { Container, LinearProgress } from '@mui/material';
 import React from 'react';
-import { DataGrid, GridActionsCellItem } from '@mui/x-data-grid';
-import DeleteIcon from '@mui/icons-material/Delete';
-import SecurityIcon from '@mui/icons-material/Security';
-import FileCopyIcon from '@mui/icons-material/FileCopy';
-import { useEffect } from 'react';
-import axios from 'axios';
-import useAuth from '../../Hooks/useAuth';
+import Paper from '@mui/material/Paper';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TablePagination from '@mui/material/TablePagination';
+import TableRow from '@mui/material/TableRow';
+import { useState } from 'react';
+import { IconButton, Skeleton, Tooltip } from '@mui/material';
+import { Delete } from '@mui/icons-material';
 
-const initialRows = [
-    {
+const Tasks = ({ handleRemoveTask, rows }) => {
+    const [page, setPage] = useState(0);
+    const [rowsPerPage, setRowsPerPage] = useState(10);
+    const handleChangePage = (event, newPage) => {
+        setPage(newPage);
+    };
 
-        _id: "6234882acb8220bba0c2b876",
-        task: "Add Task",
-        uid: "n9k7H9rPu3dOHyTxEwGYxa9q67D2",
-        Done: false,
-        Importance: false,
-        Time: "19:24:55",
-        Date: "Fri Mar 18 2022"
-
-    },
-    {
-
-        _id: "6234882acb8220bba0c2b876",
-        task: "Add Task",
-        uid: "n9k7H9rPu3dOHyTxEwGYxa9q67D2",
-        Done: false,
-        Importance: false,
-        Time: "19:24:55",
-        Date: "Fri Mar 18 2022"
-
-    },
-];
-const Tasks = () => {
-    const [rows, setRows] = React.useState([]);
-    const { user } = useAuth();
-    useEffect(() => {
-        const url = `https://tasker-web0.herokuapp.com/tasks/${user.uid}`;
-        axios.get(url).then((data) => {
-            setRows(data.data);
-            console.log(rows, '====================================', data.data);
-        });
-    }, [rows, user.uid]);
-    const deleteUser = React.useCallback(
-        (id) => () => {
-            setTimeout(() => {
-                setRows((prevRows) => prevRows.filter((row) => row.id !== id));
-            });
-        },
-        [],
-    );
-
-    const toggleAdmin = React.useCallback(
-        (id) => () => {
-            setRows((prevRows) =>
-                prevRows.map((row) =>
-                    row._id === id ? { ...row, Done: !row.Done } : row,
-                ),
-            );
-        },
-        [],
-    );
-
-    const duplicateUser = React.useCallback(
-        (id) => () => {
-            setRows((prevRows) => {
-                const rowToDuplicate = prevRows.find((row) => row.id === id);
-                return [...prevRows, { ...rowToDuplicate, id: Date.now() }];
-            });
-        },
-        [],
-    );
-    const columns = [
-        { field: 'task', headerName: 'Column 1', type: 'string', width: 300 },
-        // {
-        //     field: 'actions',
-        //     type: 'actions',
-        //     width: 80,
-        //     getActions: (params) => [
-        //         <GridActionsCellItem
-        //             icon={<DeleteIcon />}
-        //             label="Delete"
-        //             onClick={deleteUser(params._id)}
-        //         />,
-        //         <GridActionsCellItem
-        //             icon={<SecurityIcon />}
-        //             label="Toggle Admin"
-        //             onClick={toggleAdmin(params._id)}
-        //             showInMenu
-        //         />,
-        //         <GridActionsCellItem
-        //             icon={<FileCopyIcon />}
-        //             label="Duplicate User"
-        //             onClick={duplicateUser(params._id)}
-        //             showInMenu
-        //         />,
-        //     ],
-        // },
-    ]
-    // [deleteUser, toggleAdmin, duplicateUser],
+    const handleChangeRowsPerPage = (event) => {
+        setRowsPerPage(+event.target.value);
+        setPage(0);
+    };
 
     return (
-        <Container style={{ height: 250, width: '100%' }} container spacing={3} sx={{ mt: 4, mb: 4 }}>
-            {rows ? <DataGrid columns={[{ field: 'task' }, { field: 'Date' }]} rows={[
-                {
-                    id: 1,
-                    task: rows[0].task,
-                    Date: rows[0].Date,
-                },
-            ]} /> : <LinearProgress />}
-        </Container>
+        <Paper style={{ height: "auto", width: '95%', }} container spacing={3} sx={{ my: 4, mx: "auto", px: 3 }}>
+            <TableContainer sx={{ maxHeight: 440 }}>
+                <Table stickyHeader aria-label="sticky table">
+                    <TableHead>
+                        <TableRow>
+                            <TableCell align="left" >
+                                Task
+                            </TableCell>
+                            <TableCell align="right" colSpan={1}>
+                                Added Time
+                            </TableCell>
+                        </TableRow>
+                    </TableHead>
+                    {rows ? <TableBody style={{}}>
+                        {rows
+                            .map((row) => {
+                                return (
+                                    <TableRow hover role="checkbox" tabIndex={-1} key={row._id}>
+                                        <TableCell align="left" >
+                                            <Tooltip title="Delete">
+                                                <IconButton onClick={() => handleRemoveTask(row._id)}>
+                                                    <Delete />
+                                                </IconButton>
+                                            </Tooltip>
+                                        </TableCell>
+                                        <TableCell align="left">{row.Task}</TableCell>
+                                        <TableCell align="right">{row.Time.slice(0, 5)}</TableCell>
+
+                                    </TableRow>
+                                );
+                            })}
+                    </TableBody> : <div>
+                        <Skeleton />
+                        <Skeleton animation="wave" />
+                        <Skeleton animation={false} /></div>}
+                </Table>
+            </TableContainer>
+            <TablePagination
+                rowsPerPageOptions={[10, 25, 100]}
+                component="div"
+                count={rows.length}
+                rowsPerPage={rowsPerPage}
+                page={page}
+                onPageChange={handleChangePage}
+                onRowsPerPageChange={handleChangeRowsPerPage}
+            />
+        </Paper>
     );
 };
 

@@ -6,39 +6,16 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import axios from 'axios';
-import { useState } from 'react';
-import useAuth from '../../../Hooks/useAuth';
 
-const AddTaskModal = ({ open, setOpen }) => {
-    const [taskDetails, setTaskDetails] = useState({});
-    const { user } = useAuth();
+
+const AddTaskModal = ({ open, setOpen, handleTaskSubmit, taskDetails }) => {
     const handleClose = () => {
         setOpen(false);
-    };
-    const handleTaskSubmit = () => {
-        taskDetails.uid = user.uid;
-        taskDetails.Done = false;
-        taskDetails.Importance = false;
-        taskDetails.Time = new Date().toLocaleTimeString();
-        taskDetails.Date = new Date().toDateString()
-        console.log(taskDetails);
-        axios
-            .post("https://tasker-web0.herokuapp.com/addtask", taskDetails)
-            .then(function (res) {
-                console.log(res);
-                setTaskDetails({});
-                setOpen(false);
-            })
-            .catch(function (error) {
-                console.log(error);
-                setOpen(false);
-                setTaskDetails({});
-            });
     };
 
     return (
         <div>
+
             <Dialog open={open} onClose={handleClose}>
                 <DialogTitle>Add Task</DialogTitle>
                 <DialogContent>
@@ -52,7 +29,7 @@ const AddTaskModal = ({ open, setOpen }) => {
                         type="text"
                         fullWidth
                         variant="standard"
-                        onChange={(e) => taskDetails.task = e.target.value}
+                        onChange={(e) => taskDetails.Task = e.target.value}
                     />
                 </DialogContent>
                 <DialogActions>
