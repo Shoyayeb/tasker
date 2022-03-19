@@ -9,7 +9,7 @@ import useAuth from '../../Hooks/useAuth';
 const OverView = () => {
     const [open, setOpen] = useState(false);
     const [taskDetails, setTaskDetails] = useState({});
-    const [tasks, setTasks] = useState([]);
+    const [tasks, setTasks] = useState(JSON.parse(localStorage.getItem('tasks')) || []);
     const { user } = useAuth();
     const fabStyle = {
         position: 'absolute',
@@ -32,7 +32,11 @@ const OverView = () => {
         axios
             .post("https://tasker-web0.herokuapp.com/addtask", taskDetails)
             .then(function (res) {
-                console.log(res);
+                const url = `https://tasker-web0.herokuapp.com/tasks/${user.uid}`;
+                axios.get(url).then((data) => {
+                    window.localStorage.setItem('tasks', JSON.stringify(data.data));
+                    setTasks(JSON.parse(localStorage.getItem('tasks')));
+                })
                 setTaskDetails({});
                 setOpen(false);
             })
@@ -46,7 +50,7 @@ const OverView = () => {
         const url = `https://tasker-web0.herokuapp.com/tasks/${user.uid}`;
         axios.get(url).then((data) => {
             setTasks(data.data);
-            window.localStorage.setItem("rows", JSON.stringify(data.data))
+            window.localStorage.setItem('tasks', JSON.stringify(data.data));
             console.log(tasks, '====================================', data.data);
         });
     }, []);
@@ -60,6 +64,7 @@ const OverView = () => {
                 if (data.deletedCount > 0) {
                     const remaining = tasks.filter((restTask) => restTask._id !== id);
                     setTasks(remaining);
+                    window.localStorage.setItem('tasks', JSON.stringify(remaining));
                 }
             });
     }
