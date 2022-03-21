@@ -11,7 +11,7 @@ import { useState } from 'react';
 import { IconButton, Skeleton, Tooltip } from '@mui/material';
 import { Done } from '@mui/icons-material';
 
-const Tasks = ({ handleRemoveTask, tasks }) => {
+const Tasks = ({ handleTaskComplete, handleRemoveTask, tasks }) => {
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
     const handleChangePage = (event, newPage) => {
@@ -46,8 +46,8 @@ const Tasks = ({ handleRemoveTask, tasks }) => {
                                 return (
                                     <TableRow hover role="checkbox" tabIndex={-1} key={task._id}>
                                         <TableCell align="left" >
-                                            <Tooltip title="Delete">
-                                                <IconButton onClick={() => handleRemoveTask(task._id)}>
+                                            <Tooltip title="Complete">
+                                                <IconButton onClick={() => handleTaskComplete(task._id)}>
                                                     <Done />
                                                 </IconButton>
                                             </Tooltip>

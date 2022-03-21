@@ -9,6 +9,7 @@ import useAuth from '../../Hooks/useAuth';
 const OverView = () => {
     const [open, setOpen] = useState(false);
     const [taskDetails, setTaskDetails] = useState({});
+    const [completedTaskData, setCompletedTaskData] = useState({});
     const [tasks, setTasks] = useState(JSON.parse(localStorage.getItem('tasks')) || []);
     const { user } = useAuth();
     const fabStyle = {
@@ -46,6 +47,29 @@ const OverView = () => {
                 setTaskDetails({});
             });
     };
+    const handleTaskComplete = (id) => {
+        axios.get(`https://tasker-web0.herokuapp.com/task/${id}`).then((data) => {
+            setCompletedTaskData(data.data);
+            completedTaskData.Done = true;
+            console.log(data);
+            handleRemoveTask(id);
+            axios
+                .post("https://tasker-web0.herokuapp.com/addcompletedtask", completedTaskData)
+                .then(function (res) {
+                    const url = `https://tasker-web0.herokuapp.com/tasks/${user.uid}`;
+                    axios.get(url).then((data) => {
+                        window.localStorage.setItem('tasks', JSON.stringify(data.data));
+                        setTasks(JSON.parse(localStorage.getItem('tasks')));
+                    })
+                    setCompletedTaskData({});
+                })
+                .catch(function (error) {
+                    console.log(error);
+                    setCompletedTaskData({});
+                });
+        });
+
+    }
     useEffect(() => {
         const url = `https://tasker-web0.herokuapp.com/tasks/${user.uid}`;
         axios.get(url).then((data) => {
@@ -56,12 +80,10 @@ const OverView = () => {
     }, []);
     const handleRemoveTask = (id) => {
         const url = `https://tasker-web0.herokuapp.com/tasks/${id}`;
-        fetch(url, {
-            method: "DELETE",
-        })
-            .then((res) => res.json())
+        axios.delete(url)
             .then((data) => {
-                if (data.deletedCount > 0) {
+                console.log(data);
+                if (data.data.deletedCount > 0) {
                     const remaining = tasks.filter((restTask) => restTask._id !== id);
                     setTasks(remaining);
                     window.localStorage.setItem('tasks', JSON.stringify(remaining));
@@ -87,7 +109,7 @@ const OverView = () => {
             <Fab sx={fab.sx} aria-label={fab.label} color={fab.color} onClick={() => setOpen(true)}>
                 {fab.icon}
             </Fab>
-            <Tasks handleRemoveTask={handleRemoveTask} tasks={tasks} />
+            <Tasks handleTaskComplete={handleTaskComplete} handleRemoveTask={handleRemoveTask} tasks={tasks} />
             <AddTaskModal open={open} setOpen={setOpen} handleTaskSubmit={handleTaskSubmit} taskDetails={taskDetails} />
         </Box>
     );
