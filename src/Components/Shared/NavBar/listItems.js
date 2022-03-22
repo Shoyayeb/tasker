@@ -14,19 +14,19 @@ export const mainListItems = (
             </ListItemIcon>
             <ListItemText primary="Overview" />
         </ListItemButton>
-        <ListItemButton to="/" component={Link}>
+        <ListItemButton to="/tasks" component={Link}>
             <ListItemIcon>
                 <Task />
             </ListItemIcon>
             <ListItemText primary="Tasks" />
         </ListItemButton>
-        <ListItemButton to="/" component={Link}>
+        <ListItemButton to="/completed" component={Link}>
             <ListItemIcon>
                 <DoneAllOutlined />
             </ListItemIcon>
             <ListItemText primary="Completed" />
         </ListItemButton>
-        <ListItemButton to="/" component={Link}>
+        <ListItemButton to="/stats" component={Link}>
             <ListItemIcon>
                 <BarChartIcon />
             </ListItemIcon>

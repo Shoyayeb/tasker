@@ -5,24 +5,13 @@ import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
-import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
-import { useState } from 'react';
 import { IconButton, Skeleton, Tooltip } from '@mui/material';
 import { Done } from '@mui/icons-material';
+import useAuth from '../../Hooks/useAuth';
 
-const Tasks = ({ handleTaskComplete, handleRemoveTask, tasks }) => {
-    const [page, setPage] = useState(0);
-    const [rowsPerPage, setRowsPerPage] = useState(10);
-    const handleChangePage = (event, newPage) => {
-        setPage(newPage);
-    };
-
-    const handleChangeRowsPerPage = (event) => {
-        setRowsPerPage(+event.target.value);
-        setPage(0);
-    };
-
+const Tasks = () => {
+    const [handleTaskComplete, tasks] = useAuth();
     return (
         <Paper style={{ height: "auto", width: '95%', }} container spacing={3} sx={{ my: 4, mx: "auto", px: 3 }}>
             <TableContainer sx={{ maxHeight: 440 }}>
@@ -57,21 +46,15 @@ const Tasks = ({ handleTaskComplete, handleRemoveTask, tasks }) => {
                                     </TableRow>
                                 );
                             })}
-                    </TableBody> : <div>
-                        <Skeleton />
-                        <Skeleton animation="wave" />
-                        <Skeleton animation={false} /></div>}
+                    </TableBody> : <TableBody>
+                        <TableRow>
+                            {/* <TableCell align="center"><Skeleton /></TableCell> */}
+                            <Skeleton animation="wave" variant="text" />
+                            {/* <Skeleton animation={false} width="100%" /> */}
+                        </TableRow>
+                    </TableBody>}
                 </Table>
             </TableContainer>
-            <TablePagination
-                rowsPerPageOptions={[10, 25, 100]}
-                component="div"
-                count={tasks.length}
-                rowsPerPage={rowsPerPage}
-                page={page}
-                onPageChange={handleChangePage}
-                onRowsPerPageChange={handleChangeRowsPerPage}
-            />
         </Paper>
     );
 };

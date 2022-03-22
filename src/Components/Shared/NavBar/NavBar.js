@@ -11,6 +11,7 @@ import * as React from 'react';
 import useAuth from '../../../Hooks/useAuth';
 import NavProfileModal from '../Modals/NavProfileModal';
 import SideBar from '../SideBar/SideBar';
+import AddTaskFab from './../AddTaskFab/AddTaskFab';
 
 const drawerWidth = 250;
 
@@ -110,6 +111,7 @@ export default function NavBar() {
                 </Toolbar>
             </AppBar>
             <SideBar open={open} toggleDrawer={toggleDrawer} drawerWidth={drawerWidth} />
+            <AddTaskFab />
         </div >
     );
 }

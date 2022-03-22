@@ -7,9 +7,12 @@ import NavBar from './Components/Shared/NavBar/NavBar';
 import useAuth from './Hooks/useAuth';
 import LoginRegister from './Components/LoginRegister/LoginRegister/LoginRegister';
 import OverView from './Components/OverView/OverView';
+import Completed from './Components/Completed/Completed';
+import AddTaskFab from './Components/Shared/AddTaskFab/AddTaskFab';
 function App() {
   const mdTheme = createTheme();
   const { user } = useAuth();
+  console.log(user);
   return (
     <div>
       <Router>
@@ -17,21 +20,21 @@ function App() {
           <Box sx={{ display: 'flex' }}>
             <CssBaseline />
             <ErrorModal />
-            {user.uid ? <NavBar /> : ""}
-            <Routes>
-              {!user.uid && (
-                <Route path="/signin" element={<LoginRegister />} />
-              )}
 
+            {user.uid ? <NavBar /> : ""}
+            {/* <Routes>
               {user.uid && (
                 <>
                   <Route path="/" element={<OverView />} />
                   <Route path="/home" element={<OverView />} />
+                  <Route path="/completed" element={<Completed />} />
                 </>
               )}
-
+              {!user.uid && (
+                <Route path="/signin" element={<LoginRegister />} />
+              )}
               <Route path="*" element={<Navigate to={user.uid ? "/home" : "/signin"} />} />
-            </Routes>
+            </Routes> */}
           </Box>
         </ThemeProvider>
       </Router>

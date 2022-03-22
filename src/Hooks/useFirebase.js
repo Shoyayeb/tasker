@@ -1,3 +1,4 @@
+import axios from "axios";
 import {
   createUserWithEmailAndPassword,
   getAuth,
@@ -10,12 +11,17 @@ import initializeFirebase from "../Firebase/firebase.init";
 initializeFirebase();
 
 const useFirebase = () => {
+  const [open, setOpen] = useState(false);
   const [user, setUser] = useState([]);
   const [loading, setIsLoading] = useState(true);
   const [modal, setModal] = useState(false);
   const [error, setError] = useState("");
   const [admin, setAdmin] = useState({});
   const [isLogin, setIsLogin] = useState(true);
+
+  const [taskDetails, setTaskDetails] = useState({});
+  const [completedTaskData, setCompletedTaskData] = useState({});
+  const [tasks, setTasks] = useState(JSON.parse(localStorage.getItem('tasks')) || []);
 
   const auth = getAuth();
   auth.useDeviceLanguage();
@@ -122,21 +128,93 @@ const useFirebase = () => {
     return () => unsubscribe;
   }, [auth]);
 
+  useEffect(() => {
+    const url = `https://tasker-web0.herokuapp.com/tasks/${user.uid}`;
+    axios.get(url).then((data) => {
+      setTasks(data.data);
+      window.localStorage.setItem('tasks', JSON.stringify(data.data));
+      console.log(tasks, '====================================', data.data);
+    });
+  }, [user.uid]);
+
+  console.log(user);
+
+  const handleTaskSubmit = () => {
+    taskDetails.uid = user.uid;
+    taskDetails.Done = false;
+    taskDetails.Importance = false;
+    taskDetails.Time = new Date().toLocaleTimeString();
+    taskDetails.Date = new Date().toDateString()
+    console.log(taskDetails);
+    axios
+      .post("https://tasker-web0.herokuapp.com/addtask", taskDetails)
+      .then(function (res) {
+        const url = `https://tasker-web0.herokuapp.com/tasks/${user.uid}`;
+        axios.get(url).then((data) => {
+          window.localStorage.setItem('tasks', JSON.stringify(data.data));
+          setTasks(JSON.parse(localStorage.getItem('tasks')));
+        })
+        setTaskDetails({});
+        setOpen(false);
+      })
+      .catch(function (error) {
+        console.log(error);
+        setOpen(false);
+        setTaskDetails({});
+      });
+  };
+  const handleTaskComplete = (id) => {
+    axios.get(`https://tasker-web0.herokuapp.com/task/${id}`).then((data) => {
+      setCompletedTaskData(data.data);
+      completedTaskData.Done = true;
+      console.log(data);
+      handleRemoveTask(id);
+      axios
+        .post("https://tasker-web0.herokuapp.com/addcompletedtask", completedTaskData)
+        .then(function (res) {
+          const url = `https://tasker-web0.herokuapp.com/tasks/${user.uid}`;
+          axios.get(url).then((data) => {
+            window.localStorage.setItem('tasks', JSON.stringify(data.data));
+            setTasks(JSON.parse(localStorage.getItem('tasks')));
+          })
+          setCompletedTaskData({});
+        })
+        .catch(function (error) {
+          console.log(error);
+          setCompletedTaskData({});
+        });
+    });
+  };
+  const handleRemoveTask = (id) => {
+    const url = `https://tasker-web0.herokuapp.com/tasks/${id}`;
+    axios.delete(url)
+      .then((data) => {
+        console.log(data);
+        if (data.data.deletedCount > 0) {
+          const remaining = tasks.filter((restTask) => restTask._id !== id);
+          setTasks(remaining);
+          window.localStorage.setItem('tasks', JSON.stringify(remaining));
+        }
+      });
+  }
   return {
+    open, setOpen,
+    error, setError,
+    loading, setIsLoading,
+    isLogin, setIsLogin,
+    modal, setModal,
+    admin, setAdmin,
+    tasks, setTasks,
+    taskDetails, setTaskDetails,
+    completedTaskData, setCompletedTaskData,
     user,
-    error,
-    setError,
-    loading,
-    setIsLoading,
-    isLogin,
-    setIsLogin,
-    modal,
-    admin,
-    setAdmin,
-    setModal,
-    loginUserByEmail, createUserByEmail,
+    loginUserByEmail,
+    createUserByEmail,
     socialSignIn,
     signOutUser,
+    handleRemoveTask,
+    handleTaskComplete,
+    handleTaskSubmit,
   };
 };
 

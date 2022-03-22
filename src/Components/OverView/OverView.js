@@ -1,96 +1,7 @@
-import { Box, Fab, Toolbar } from '@mui/material';
-import React, { useEffect, useState } from 'react';
-import AddIcon from '@mui/icons-material/Add';
+import { Box, Toolbar } from '@mui/material';
 import Tasks from './../Tasks/Tasks';
-import AddTaskModal from './../Shared/Modals/AddTaskModal';
-import axios from 'axios';
-import useAuth from '../../Hooks/useAuth';
 
 const OverView = () => {
-    const [open, setOpen] = useState(false);
-    const [taskDetails, setTaskDetails] = useState({});
-    const [completedTaskData, setCompletedTaskData] = useState({});
-    const [tasks, setTasks] = useState(JSON.parse(localStorage.getItem('tasks')) || []);
-    const { user } = useAuth();
-    const fabStyle = {
-        position: 'absolute',
-        bottom: 16,
-        right: 16,
-    };
-    const fab = {
-        color: 'primary',
-        sx: fabStyle,
-        icon: <AddIcon />,
-        label: 'Add',
-    }
-    const handleTaskSubmit = () => {
-        taskDetails.uid = user.uid;
-        taskDetails.Done = false;
-        taskDetails.Importance = false;
-        taskDetails.Time = new Date().toLocaleTimeString();
-        taskDetails.Date = new Date().toDateString()
-        console.log(taskDetails);
-        axios
-            .post("https://tasker-web0.herokuapp.com/addtask", taskDetails)
-            .then(function (res) {
-                const url = `https://tasker-web0.herokuapp.com/tasks/${user.uid}`;
-                axios.get(url).then((data) => {
-                    window.localStorage.setItem('tasks', JSON.stringify(data.data));
-                    setTasks(JSON.parse(localStorage.getItem('tasks')));
-                })
-                setTaskDetails({});
-                setOpen(false);
-            })
-            .catch(function (error) {
-                console.log(error);
-                setOpen(false);
-                setTaskDetails({});
-            });
-    };
-    const handleTaskComplete = (id) => {
-        axios.get(`https://tasker-web0.herokuapp.com/task/${id}`).then((data) => {
-            setCompletedTaskData(data.data);
-            completedTaskData.Done = true;
-            console.log(data);
-            handleRemoveTask(id);
-            axios
-                .post("https://tasker-web0.herokuapp.com/addcompletedtask", completedTaskData)
-                .then(function (res) {
-                    const url = `https://tasker-web0.herokuapp.com/tasks/${user.uid}`;
-                    axios.get(url).then((data) => {
-                        window.localStorage.setItem('tasks', JSON.stringify(data.data));
-                        setTasks(JSON.parse(localStorage.getItem('tasks')));
-                    })
-                    setCompletedTaskData({});
-                })
-                .catch(function (error) {
-                    console.log(error);
-                    setCompletedTaskData({});
-                });
-        });
-
-    }
-    useEffect(() => {
-        const url = `https://tasker-web0.herokuapp.com/tasks/${user.uid}`;
-        axios.get(url).then((data) => {
-            setTasks(data.data);
-            window.localStorage.setItem('tasks', JSON.stringify(data.data));
-            console.log(tasks, '====================================', data.data);
-        });
-    }, []);
-    const handleRemoveTask = (id) => {
-        const url = `https://tasker-web0.herokuapp.com/tasks/${id}`;
-        axios.delete(url)
-            .then((data) => {
-                console.log(data);
-                if (data.data.deletedCount > 0) {
-                    const remaining = tasks.filter((restTask) => restTask._id !== id);
-                    setTasks(remaining);
-                    window.localStorage.setItem('tasks', JSON.stringify(remaining));
-                }
-            });
-    }
-
     return (
         <Box
             component="main"
@@ -106,11 +17,8 @@ const OverView = () => {
             }}
         >
             <Toolbar />
-            <Fab sx={fab.sx} aria-label={fab.label} color={fab.color} onClick={() => setOpen(true)}>
-                {fab.icon}
-            </Fab>
-            <Tasks handleTaskComplete={handleTaskComplete} handleRemoveTask={handleRemoveTask} tasks={tasks} />
-            <AddTaskModal open={open} setOpen={setOpen} handleTaskSubmit={handleTaskSubmit} taskDetails={taskDetails} />
+
+            <Tasks />
         </Box>
     );
 };
