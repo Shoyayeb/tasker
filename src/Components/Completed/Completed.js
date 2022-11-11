@@ -1,13 +1,13 @@
 import AddIcon from "@mui/icons-material/Add";
 import { Box, Fab, Toolbar } from "@mui/material";
 import axios from "axios";
-import { addDoc, collection, getDocs } from "firebase/firestore";
+import { addDoc, collection } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import useAuth from "../../Hooks/useAuth";
 import AddTaskModal from "./../Shared/Modals/AddTaskModal";
 import Tasks from "./../Tasks/Tasks";
 
-const OverView = () => {
+const Completed = () => {
   const [open, setOpen] = useState(false);
   const [taskDetails, setTaskDetails] = useState({});
   const [completedTaskData, setCompletedTaskData] = useState({});
@@ -82,22 +82,12 @@ const OverView = () => {
     });
   };
   useEffect(() => {
-    // const url = `${process.env.REACT_APP_API_LINK}/tasks/${user.uid}`;
-    // axios.get(url).then((data) => {
-    //   setTasks(data.data);
-    //   window.localStorage.setItem("tasks", JSON.stringify(data.data));
-    //   console.log(tasks, "====================================", data.data);
-    // });
-    const taskDocs = [];
-    const getTasksFromFireStore = async () => {
-      const querySnapshot = await getDocs(collection(db, "tasks"));
-      querySnapshot.forEach((doc) => {
-        taskDocs.push(doc.data());
-      });
-    };
-    getTasksFromFireStore();
-    setTasks(taskDocs);
-    console.log(tasks);
+    const url = `${process.env.REACT_APP_API_LINK}/tasks/${user.uid}`;
+    axios.get(url).then((data) => {
+      setTasks(data.data);
+      window.localStorage.setItem("tasks", JSON.stringify(data.data));
+      console.log(tasks, "====================================", data.data);
+    });
   }, []);
   const handleRemoveTask = (id) => {
     const url = `${process.env.REACT_APP_API_LINK}/tasks/${id}`;
@@ -149,4 +139,4 @@ const OverView = () => {
   );
 };
 
-export default OverView;
+export default Completed;

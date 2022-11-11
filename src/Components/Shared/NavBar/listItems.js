@@ -7,30 +7,30 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 export const mainListItems = (
-    <React.Fragment>
-        <ListItemButton to="/" component={Link}>
-            <ListItemIcon>
-                <Dashboard />
-            </ListItemIcon>
-            <ListItemText primary="Overview" />
-        </ListItemButton>
-        <ListItemButton to="/" component={Link}>
-            <ListItemIcon>
-                <Task />
-            </ListItemIcon>
-            <ListItemText primary="Tasks" />
-        </ListItemButton>
-        <ListItemButton to="/" component={Link}>
-            <ListItemIcon>
-                <DoneAllOutlined />
-            </ListItemIcon>
-            <ListItemText primary="Completed" />
-        </ListItemButton>
-        <ListItemButton to="/" component={Link}>
-            <ListItemIcon>
-                <BarChartIcon />
-            </ListItemIcon>
-            <ListItemText primary="Stats" />
-        </ListItemButton>
-    </React.Fragment>
+  <React.Fragment>
+    <ListItemButton to="/home" component={Link}>
+      <ListItemIcon>
+        <Dashboard />
+      </ListItemIcon>
+      <ListItemText primary="Overview" />
+    </ListItemButton>
+    <ListItemButton to="/tasks" component={Link}>
+      <ListItemIcon>
+        <Task />
+      </ListItemIcon>
+      <ListItemText primary="Tasks" />
+    </ListItemButton>
+    <ListItemButton to="/completed" component={Link}>
+      <ListItemIcon>
+        <DoneAllOutlined />
+      </ListItemIcon>
+      <ListItemText primary="Completed" />
+    </ListItemButton>
+    <ListItemButton to="/" component={Link}>
+      <ListItemIcon>
+        <BarChartIcon />
+      </ListItemIcon>
+      <ListItemText primary="Stats" />
+    </ListItemButton>
+  </React.Fragment>
 );
