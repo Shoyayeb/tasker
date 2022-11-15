@@ -21,7 +21,7 @@ const Completed = () => {
     right: 16,
   };
   const fab = {
-    color: "primary",
+    color: "secondary",
     sx: fabStyle,
     icon: <AddIcon />,
     label: "Add",

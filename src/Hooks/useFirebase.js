@@ -10,7 +10,12 @@ import {
   signOut,
   updateProfile,
 } from "firebase/auth";
-import { addDoc, collection, getFirestore } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  getFirestore,
+  serverTimestamp,
+} from "firebase/firestore";
 import { useEffect, useState } from "react";
 import firebaseConfig from "../Firebase/firebase.config";
 import initializeFirebase from "../Firebase/firebase.init";
@@ -18,27 +23,49 @@ import initializeFirebase from "../Firebase/firebase.init";
 initializeFirebase();
 
 const useFirebase = () => {
+  const [open, setOpen] = useState(false);
   const [user, setUser] = useState([]);
   const [loading, setIsLoading] = useState(true);
   const [modal, setModal] = useState(false);
   const [error, setError] = useState("");
   const [admin, setAdmin] = useState({});
   const [isLogin, setIsLogin] = useState(true);
+  const [tasks, setTasks] = useState(
+    JSON.parse(localStorage.getItem("tasks")) || []
+  );
+
+  const auth = getAuth();
+  auth.useDeviceLanguage();
 
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
 
-  const addTask = async (data) => {
+  const handleTaskSubmit = async (taskDetails) => {
+    taskDetails.uid = user.uid;
+    taskDetails.Done = false;
+    taskDetails.Importance = false;
+    taskDetails.Time = new Date().toLocaleTimeString();
+    taskDetails.Date = new Date().toDateString();
+    taskDetails.timeStamp = serverTimestamp();
+    console.log(taskDetails);
     try {
-      const docRef = await addDoc(collection(db, "tasks"), data);
+      tasks.push(taskDetails);
+      const docRef = await addDoc(collection(db, user.uid), taskDetails);
       console.log("Document written with ID: ", docRef.id);
+      console.log(tasks);
     } catch (e) {
       console.error("Error adding document: ", e);
     }
   };
 
-  const auth = getAuth();
-  auth.useDeviceLanguage();
+  // const addTask = async (data) => {
+  //   try {
+  //     const docRef = await addDoc(collection(db, "tasks"), data);
+  //     console.log("Document written with ID: ", docRef.id);
+  //   } catch (e) {
+  //     console.error("Error adding document: ", e);
+  //   }
+  // };
 
   // create user with email
   const createUserByEmail = (email, password, firstName, lastName) => {
@@ -156,12 +183,17 @@ const useFirebase = () => {
     admin,
     setAdmin,
     setModal,
+    tasks,
+    setTasks,
+    open,
+    setOpen,
     loginUserByEmail,
     createUserByEmail,
     socialSignIn,
     signOutUser,
     db,
+    handleTaskSubmit,
   };
-};
+};;
 
 export default useFirebase;

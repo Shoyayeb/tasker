@@ -1,20 +1,42 @@
 import { Done } from "@mui/icons-material";
-import { IconButton, Skeleton, Tooltip } from "@mui/material";
-import Paper from "@mui/material/Paper";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TablePagination from "@mui/material/TablePagination";
-import TableRow from "@mui/material/TableRow";
+import {
+  IconButton,
+  Paper,
+  Skeleton,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TablePagination,
+  TableRow,
+  Tooltip,
+} from "@mui/material";
 import React, { useState } from "react";
 import useAuth from "../../Hooks/useAuth";
 
-const Tasks = () => {
-  const { tasks } = useAuth();
+const Test = () => {
+  const { setOpen } = useAuth();
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
+  const tasks = [
+    {
+      Task: "kitty",
+      Time: "2:08:18 PM",
+      uid: "n9k7H9rPu3dOHyTxEwGYxa9q67D2",
+    },
+    {
+      Task: "saul",
+      Time: "1:08:18 PM",
+      uid: "n9k7H9rPu3dOHyTxEwGYxa9q67D2",
+    },
+    {
+      Task: "hello",
+      Time: "8:08:18 PM",
+      uid: "n9k7H9rPu3dOHyTxEwGYxa9q67D2",
+    },
+  ];
+
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -98,4 +120,4 @@ const Tasks = () => {
   );
 };
 
-export default Tasks;
+export default Test;
