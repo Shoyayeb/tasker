@@ -11,8 +11,7 @@ import useAuth from "../../../Hooks/useAuth";
 import LogIn from '../Login/LogIn';
 import Register from "../Register/Register";
 const LoginRegister = () => {
-    const { isLogin, socialSignIn, user } = useAuth();
-    console.log(user);
+    const { isLogin, socialSignIn } = useAuth();
     return (
         <Container component="main" maxWidth="sm">
             <CssBaseline />

@@ -47,35 +47,20 @@ const useFirebase = () => {
     taskDetails.Time = new Date().toLocaleTimeString();
     taskDetails.Date = new Date().toDateString();
     taskDetails.timeStamp = serverTimestamp();
-    console.log(taskDetails);
     try {
       const docRef = await addDoc(collection(db, user.uid), taskDetails);
-      console.log("Document written with ID: ", docRef.id);
       taskDetails._id = docRef.id;
       tasks.push(taskDetails);
-      console.log(tasks);
       setOpen(false);
     } catch (e) {
       setError("Error adding task");
-      console.error("Error adding document: ", e);
     }
   };
 
-  // const addTask = async (data) => {
-  //   try {
-  //     const docRef = await addDoc(collection(db, "tasks"), data);
-  //     console.log("Document written with ID: ", docRef.id);
-  //   } catch (e) {
-  //     console.error("Error adding document: ", e);
-  //   }
-  // };
-
-  // create user with email
   const createUserByEmail = (email, password, firstName, lastName) => {
     setIsLoading(true);
     return createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
-        console.log(userCredential.user);
         const uid = userCredential.user.uid;
         const name = firstName + " " + lastName;
         const photoURL =
@@ -150,7 +135,6 @@ const useFirebase = () => {
     signOut(auth)
       .then(() => {
         setError("");
-        console.log("Sign out success");
       })
       .catch((error) => {
         setError(error.message);
@@ -164,10 +148,8 @@ const useFirebase = () => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
         setUser(user);
-        console.log(user);
       } else {
         setUser({});
-        console.log(user);
       }
       setIsLoading(false);
     });

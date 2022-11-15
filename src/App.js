@@ -96,19 +96,7 @@ function App() {
                   }
                 />
               </Routes>
-              {/* {user.uid && (
-                  <>
-                    <Route path="/" element={<OverView />} />
-                    <Route path="/tasks" element={<OverView />} />
-                    <Route path="/completed" element={<Test />} />
-                  </>
-                )} */}
-              <AddTaskModal
-              // open={open}
-              // setOpen={setOpen}
-              // handleTaskSubmit={handleTaskSubmit}
-              // taskDetails={taskDetails}
-              />
+              <AddTaskModal />
             </Box>
           </Box>
         </ThemeProvider>

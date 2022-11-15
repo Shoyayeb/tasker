@@ -33,7 +33,6 @@ const Completed = () => {
         tasksArray.push(task);
       });
       setTasks(tasksArray);
-      console.log(tasksArray);
       setLoading(false);
     };
     fetchData();
@@ -60,7 +59,7 @@ const Completed = () => {
   };
 
   return (
-   <Paper
+    <Paper
       style={{ height: "auto", width: "95%" }}
       container
       spacing={3}
@@ -93,9 +92,6 @@ const Completed = () => {
                       role="checkbox"
                       tabIndex={-1}
                       key={task.Time}
-                      // style={{
-                      //   backgroundColor: randomColor(),
-                      // }}
                     >
                       <TableCell align="left">
                         <Tooltip title="Remove Task">

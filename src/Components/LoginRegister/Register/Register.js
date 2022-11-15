@@ -10,36 +10,32 @@ import useAuth from "../../../Hooks/useAuth";
 const Register = (props) => {
     const [registerData, setRegisterData] = useState({});
     const { setError, setIsLogin, createUserByEmail } = useAuth();
-    // console.log(user);
     const handleOnChange = (e) => {
-        const field = e.target.name;
-        const value = e.target.value;
-        const data = { ...registerData };
-        data[field] = value;
-        setRegisterData(data);
+      const field = e.target.name;
+      const value = e.target.value;
+      const data = { ...registerData };
+      data[field] = value;
+      setRegisterData(data);
     };
 
     const handleSubmit = (e) => {
-        e.preventDefault();
-        console.log(registerData);
-        if (
-            registerData === {} ||
-            !registerData.email ||
-            !registerData.password ||
-            !registerData.firstName ||
-            !registerData.lastName
-        ) {
-            console.log("notEntered", registerData);
-            setError("Please enter your information correctly");
-        } else {
-            console.log("creating");
-            createUserByEmail(
-                registerData.email,
-                registerData.password,
-                registerData.firstName,
-                registerData.lastName
-            );
-        }
+      e.preventDefault();
+      if (
+        registerData === {} ||
+        !registerData.email ||
+        !registerData.password ||
+        !registerData.firstName ||
+        !registerData.lastName
+      ) {
+        setError("Please enter your information correctly");
+      } else {
+        createUserByEmail(
+          registerData.email,
+          registerData.password,
+          registerData.firstName,
+          registerData.lastName
+        );
+      }
     };
 
     return (

@@ -52,20 +52,10 @@ const Tasks = () => {
             <TableBody style={{}}>
               {tasks.filter(checkCompleted).map((task) => {
                 return (
-                  <TableRow
-                    hover
-                    role="checkbox"
-                    tabIndex={-1}
-                    key={task.Time}
-                    // style={{
-                    //   backgroundColor: randomColor(),
-                    // }}
-                  >
+                  <TableRow hover role="checkbox" tabIndex={-1} key={task.Time}>
                     <TableCell align="left">
                       <Tooltip title="Complete">
-                        <IconButton
-                        // onClick={() => handleTaskComplete(task._id)}
-                        >
+                        <IconButton>
                           <Done />
                         </IconButton>
                       </Tooltip>

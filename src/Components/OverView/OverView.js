@@ -39,7 +39,6 @@ const OverView = () => {
   }, [db, setTasks, user.uid]);
 
   const handleTaskComplete = async (taskId) => {
-    console.log(taskId);
     const taskRef = doc(db, user.uid, taskId);
     await updateDoc(taskRef, {
       Done: true,
@@ -96,9 +95,6 @@ const OverView = () => {
                       role="checkbox"
                       tabIndex={-1}
                       key={task.Time}
-                      // style={{
-                      //   backgroundColor: randomColor(),
-                      // }}
                     >
                       <TableCell align="left">
                         <Tooltip title="Complete">
