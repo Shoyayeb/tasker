@@ -53,7 +53,9 @@ const useFirebase = () => {
       const docRef = await addDoc(collection(db, user.uid), taskDetails);
       console.log("Document written with ID: ", docRef.id);
       console.log(tasks);
+      setOpen(false);
     } catch (e) {
+      setError("Error adding task");
       console.error("Error adding document: ", e);
     }
   };

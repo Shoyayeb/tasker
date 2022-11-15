@@ -12,7 +12,7 @@ import {
   TableRow,
   Tooltip,
 } from "@mui/material";
-import { collection, getDocs } from "firebase/firestore";
+import { collection, doc, getDocs, updateDoc } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import useAuth from "../../Hooks/useAuth";
 
@@ -38,13 +38,13 @@ const OverView = () => {
     fetchData();
   }, []);
 
-  // const handleTaskComplete = async (taskId) => {
-  //   const taskRef = doc(db, user.uid, taskId);
-
-  //   await updateDoc(taskRef, {
-  //     Done: true,
-  //   });
-  // };
+  const handleTaskComplete = async (taskId) => {
+    const taskRef = doc(db, user.uid, taskId);
+    await updateDoc(taskRef, {
+      Done: true,
+    });
+    setTasks(tasks.filter((task) => task._id !== taskId));
+  };
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -102,7 +102,7 @@ const OverView = () => {
                       <TableCell align="left">
                         <Tooltip title="Complete">
                           <IconButton
-                        // onClick={() => handleTaskComplete(task._id)}
+                            onClick={() => handleTaskComplete(task._id)}
                           >
                             <Done />
                           </IconButton>
