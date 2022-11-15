@@ -10,6 +10,7 @@ import {
 import "./App.css";
 import LoginRegister from "./Components/LoginRegister/LoginRegister/LoginRegister";
 import OverView from "./Components/OverView/OverView";
+import PrivateOutlet from "./Components/PrivateOutlet/PrivateOutlet";
 import AddTaskModal from "./Components/Shared/Modals/AddTaskModal";
 import ErrorModal from "./Components/Shared/Modals/ErrorModal";
 import NavBar from "./Components/Shared/NavBar/NavBar";
@@ -34,19 +35,9 @@ function App() {
     <div>
       <Router>
         <ThemeProvider theme={mdTheme}>
-          <Routes>
-            <Route path="/" element={<Navigate to="/signin" />} />
-            {user.uid ? (
-              <Route path="/signin" element={<Navigate to="/tasks" />} />
-            ) : (
-              <Route path="/signin" element={<LoginRegister />} />
-            )}
-            <Route path="/*" element={<div>not found</div>} />
-            {/* <Route
-              path="*"
-              element={<Navigate to={user.uid ? "/tasks" : "/signin"} />}
-            /> */}
-          </Routes>
+          {/* <Routes>
+            <Route path="/signin" element={<LoginRegister />} />
+          </Routes> */}
           <Box sx={{ display: "flex" }}>
             <CssBaseline />
             <ErrorModal />
@@ -65,17 +56,46 @@ function App() {
               }}
             >
               <Toolbar />
-              <Fab
-                sx={fab.sx}
-                aria-label={fab.label}
-                color={fab.color}
-                onClick={() => setOpen(true)}
-              >
-                {fab.icon}
-              </Fab>
+              {user.uid && (
+                <Fab
+                  sx={fab.sx}
+                  aria-label={fab.label}
+                  color={fab.color}
+                  onClick={() => setOpen(true)}
+                >
+                  {fab.icon}
+                </Fab>
+              )}
               <Routes>
-                <Route path="/tasks" element={<OverView />} />
-                <Route path="/completed" element={<Test />} />
+                {user.uid ? (
+                  <Route path="/signin" element={<Navigate to="/tasks" />} />
+                ) : (
+                  <Route path="/signin" element={<LoginRegister />} />
+                )}
+                <Route
+                  path="/"
+                  element={
+                    <PrivateOutlet>
+                      <OverView />
+                    </PrivateOutlet>
+                  }
+                />
+                <Route
+                  path="/tasks"
+                  element={
+                    <PrivateOutlet>
+                      <OverView />
+                    </PrivateOutlet>
+                  }
+                />
+                <Route
+                  path="/completed"
+                  element={
+                    <PrivateOutlet>
+                      <Test />
+                    </PrivateOutlet>
+                  }
+                />
               </Routes>
               {/* {user.uid && (
                   <>
