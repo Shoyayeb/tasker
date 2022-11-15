@@ -5,9 +5,8 @@ import {
   BrowserRouter as Router,
   Navigate,
   Route,
-  Routes
+  Routes,
 } from "react-router-dom";
-import "./App.css";
 import Completed from './Components/Completed/Completed';
 import LoginRegister from "./Components/LoginRegister/LoginRegister/LoginRegister";
 import OverView from "./Components/OverView/OverView";
