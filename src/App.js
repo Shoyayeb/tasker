@@ -14,6 +14,7 @@ import PrivateOutlet from "./Components/PrivateOutlet/PrivateOutlet";
 import AddTaskModal from "./Components/Shared/Modals/AddTaskModal";
 import ErrorModal from "./Components/Shared/Modals/ErrorModal";
 import NavBar from "./Components/Shared/NavBar/NavBar";
+import UpComing from "./Components/UpComing/UpComing";
 import useAuth from "./Hooks/useAuth";
 function App() {
   const mdTheme = createTheme();
@@ -92,6 +93,22 @@ function App() {
                   element={
                     <PrivateOutlet>
                       <Completed />
+                    </PrivateOutlet>
+                  }
+                />
+                <Route
+                  path="/stats"
+                  element={
+                    <PrivateOutlet>
+                      <UpComing />
+                    </PrivateOutlet>
+                  }
+                />
+                <Route
+                  path="/deleted"
+                  element={
+                    <PrivateOutlet>
+                      <UpComing />
                     </PrivateOutlet>
                   }
                 />

@@ -1,19 +1,13 @@
-import { Dashboard, DoneAllOutlined, Task } from '@mui/icons-material';
-import BarChartIcon from '@mui/icons-material/BarChart';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import React from 'react';
-import { Link } from 'react-router-dom';
+import { DeleteForever, DoneAllOutlined, Task } from "@mui/icons-material";
+import BarChartIcon from "@mui/icons-material/BarChart";
+import ListItemButton from "@mui/material/ListItemButton";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import ListItemText from "@mui/material/ListItemText";
+import React from "react";
+import { Link } from "react-router-dom";
 
 export const mainListItems = (
   <React.Fragment>
-    <ListItemButton to="/home" component={Link}>
-      <ListItemIcon>
-        <Dashboard />
-      </ListItemIcon>
-      <ListItemText primary="Overview" />
-    </ListItemButton>
     <ListItemButton to="/tasks" component={Link}>
       <ListItemIcon>
         <Task />
@@ -31,6 +25,12 @@ export const mainListItems = (
         <BarChartIcon />
       </ListItemIcon>
       <ListItemText primary="Stats" />
+    </ListItemButton>
+    <ListItemButton to="/deleted" component={Link}>
+      <ListItemIcon>
+        <DeleteForever />
+      </ListItemIcon>
+      <ListItemText primary="Deleted" />
     </ListItemButton>
   </React.Fragment>
 );
