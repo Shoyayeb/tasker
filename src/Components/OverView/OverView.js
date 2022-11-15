@@ -17,7 +17,7 @@ import React, { useEffect, useState } from "react";
 import useAuth from "../../Hooks/useAuth";
 
 const OverView = () => {
-  const { tasks, db, user, setTasks, setOpen } = useAuth();
+  const { tasks, db, user, setTasks } = useAuth();
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [loading, setLoading] = useState(false);
@@ -36,9 +36,10 @@ const OverView = () => {
       setLoading(false);
     };
     fetchData();
-  }, []);
+  }, [db, setTasks, user.uid]);
 
   const handleTaskComplete = async (taskId) => {
+    console.log(taskId);
     const taskRef = doc(db, user.uid, taskId);
     await updateDoc(taskRef, {
       Done: true,

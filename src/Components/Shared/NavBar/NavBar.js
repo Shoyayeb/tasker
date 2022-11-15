@@ -41,7 +41,6 @@ export default function NavBar() {
         setAnchorElUser(null);
     };
     const { user } = useAuth();
-    console.log(user);
 
     const avatar = user?.displayName?.charAt(0);
     const [open, setOpen] = React.useState(true);

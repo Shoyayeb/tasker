@@ -49,9 +49,10 @@ const useFirebase = () => {
     taskDetails.timeStamp = serverTimestamp();
     console.log(taskDetails);
     try {
-      tasks.push(taskDetails);
       const docRef = await addDoc(collection(db, user.uid), taskDetails);
       console.log("Document written with ID: ", docRef.id);
+      taskDetails._id = docRef.id;
+      tasks.push(taskDetails);
       console.log(tasks);
       setOpen(false);
     } catch (e) {

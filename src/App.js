@@ -5,16 +5,16 @@ import {
   BrowserRouter as Router,
   Navigate,
   Route,
-  Routes,
+  Routes
 } from "react-router-dom";
 import "./App.css";
+import Completed from './Components/Completed/Completed';
 import LoginRegister from "./Components/LoginRegister/LoginRegister/LoginRegister";
 import OverView from "./Components/OverView/OverView";
 import PrivateOutlet from "./Components/PrivateOutlet/PrivateOutlet";
 import AddTaskModal from "./Components/Shared/Modals/AddTaskModal";
 import ErrorModal from "./Components/Shared/Modals/ErrorModal";
 import NavBar from "./Components/Shared/NavBar/NavBar";
-import Test from "./Components/Test/Test";
 import useAuth from "./Hooks/useAuth";
 function App() {
   const mdTheme = createTheme();
@@ -92,7 +92,7 @@ function App() {
                   path="/completed"
                   element={
                     <PrivateOutlet>
-                      <Test />
+                      <Completed />
                     </PrivateOutlet>
                   }
                 />
