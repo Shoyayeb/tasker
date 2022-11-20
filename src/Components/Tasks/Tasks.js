@@ -9,8 +9,10 @@ import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import React, { useState } from "react";
+import useAuth from "../../Hooks/useAuth";
 
-const Tasks = ({ handleTaskComplete, handleRemoveTask, tasks }) => {
+const Tasks = () => {
+  const { tasks } = useAuth();
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const handleChangePage = (event, newPage) => {
@@ -21,8 +23,6 @@ const Tasks = ({ handleTaskComplete, handleRemoveTask, tasks }) => {
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
-  // const colours = [blue[300], green[300], orange[300], purple[300], red[300]];
-  // const randomColor = () => colours[Math.floor(Math.random() * colours.length)];
   const checkCompleted = (task) => {
     if (task.Done) {
       return false;
@@ -52,20 +52,10 @@ const Tasks = ({ handleTaskComplete, handleRemoveTask, tasks }) => {
             <TableBody style={{}}>
               {tasks.filter(checkCompleted).map((task) => {
                 return (
-                  <TableRow
-                    hover
-                    role="checkbox"
-                    tabIndex={-1}
-                    key={task.Time}
-                    // style={{
-                    //   backgroundColor: randomColor(),
-                    // }}
-                  >
+                  <TableRow hover role="checkbox" tabIndex={-1} key={task.Time}>
                     <TableCell align="left">
                       <Tooltip title="Complete">
-                        <IconButton
-                          onClick={() => handleTaskComplete(task._id)}
-                        >
+                        <IconButton>
                           <Done />
                         </IconButton>
                       </Tooltip>

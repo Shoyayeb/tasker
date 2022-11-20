@@ -41,7 +41,6 @@ export default function NavBar() {
         setAnchorElUser(null);
     };
     const { user } = useAuth();
-    console.log(user);
 
     const avatar = user?.displayName?.charAt(0);
     const [open, setOpen] = React.useState(true);
@@ -49,67 +48,75 @@ export default function NavBar() {
         setOpen(!open);
     };
     return (
-        <div>
-            <AppBar position="absolute" open={open}>
-                <Toolbar
-                    sx={{
-                        pr: '24px',
-                    }}
+      <div>
+        <AppBar position="absolute" open={open}>
+          <Toolbar
+            sx={{
+              pr: "24px",
+            }}
+          >
+            <IconButton
+              edge="start"
+              color="inherit"
+              aria-label="open drawer"
+              onClick={toggleDrawer}
+              sx={{
+                marginRight: "36px",
+                ...(open && { display: "none" }),
+              }}
+            >
+              <MenuIcon />
+            </IconButton>
+            <Typography
+              component="h1"
+              variant="h6"
+              color="inherit"
+              noWrap
+              sx={{ flexGrow: 1 }}
+            >
+              Tasker
+            </Typography>
+            {user.uid ? (
+              <>
+                <IconButton color="inherit" mx="2">
+                  <Badge badgeContent={4} color="secondary">
+                    <NotificationsIcon />
+                  </Badge>
+                </IconButton>
+                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0, mx: 2 }}>
+                  <Avatar alt={user.displayName} src={user.photoURL}>
+                    {avatar}
+                  </Avatar>
+                </IconButton>
+                <Menu
+                  sx={{ mt: "45px" }}
+                  id="menu-appbar"
+                  anchorEl={anchorElUser}
+                  anchorOrigin={{
+                    vertical: "top",
+                    horizontal: "right",
+                  }}
+                  keepMounted
+                  transformOrigin={{
+                    vertical: "top",
+                    horizontal: "right",
+                  }}
+                  open={Boolean(anchorElUser)}
+                  onClose={handleCloseUserMenu}
                 >
-                    <IconButton
-                        edge="start"
-                        color="inherit"
-                        aria-label="open drawer"
-                        onClick={toggleDrawer}
-                        sx={{
-                            marginRight: '36px',
-                            ...(open && { display: 'none' }),
-                        }}
-                    >
-                        <MenuIcon />
-                    </IconButton>
-                    <Typography
-                        component="h1"
-                        variant="h6"
-                        color="inherit"
-                        noWrap
-                        sx={{ flexGrow: 1 }}
-                    >
-                        Tasker
-                    </Typography>
-                    {
-                        user.uid ? <>
-                            <IconButton color="inherit">
-                                <Badge badgeContent={4} color="secondary">
-                                    <NotificationsIcon />
-                                </Badge>
-                            </IconButton>
-                            <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                                <Avatar alt={user.displayName} src={user.photoURL}>{avatar}</Avatar>
-                            </IconButton>
-                            <Menu
-                                sx={{ mt: "45px" }}
-                                id="menu-appbar"
-                                anchorEl={anchorElUser}
-                                anchorOrigin={{
-                                    vertical: "top",
-                                    horizontal: "right",
-                                }}
-                                keepMounted
-                                transformOrigin={{
-                                    vertical: "top",
-                                    horizontal: "right",
-                                }}
-                                open={Boolean(anchorElUser)}
-                                onClose={handleCloseUserMenu}
-                            >
-                                <NavProfileModal></NavProfileModal>
-                            </Menu>
-                        </> : "login first"
-                    }
-                </Toolbar>
-            </AppBar>
-            <SideBar open={open} toggleDrawer={toggleDrawer} drawerWidth={drawerWidth} />
-        </div >
+                  <NavProfileModal></NavProfileModal>
+                </Menu>
+              </>
+            ) : (
+              "login first"
+            )}
+          </Toolbar>
+        </AppBar>
+        <SideBar
+          open={open}
+          toggleDrawer={toggleDrawer}
+          drawerWidth={drawerWidth}
+        />
+      </div>
     );
 }

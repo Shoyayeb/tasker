@@ -10,7 +10,12 @@ import {
   signOut,
   updateProfile,
 } from "firebase/auth";
-import { addDoc, collection, getFirestore } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  getFirestore,
+  serverTimestamp,
+} from "firebase/firestore";
 import { useEffect, useState } from "react";
 import firebaseConfig from "../Firebase/firebase.config";
 import initializeFirebase from "../Firebase/firebase.init";
@@ -18,34 +23,44 @@ import initializeFirebase from "../Firebase/firebase.init";
 initializeFirebase();
 
 const useFirebase = () => {
+  const [open, setOpen] = useState(false);
   const [user, setUser] = useState([]);
   const [loading, setIsLoading] = useState(true);
   const [modal, setModal] = useState(false);
   const [error, setError] = useState("");
   const [admin, setAdmin] = useState({});
   const [isLogin, setIsLogin] = useState(true);
-
-  const app = initializeApp(firebaseConfig);
-  const db = getFirestore(app);
-
-  const addTask = async (data) => {
-    try {
-      const docRef = await addDoc(collection(db, "tasks"), data);
-      console.log("Document written with ID: ", docRef.id);
-    } catch (e) {
-      console.error("Error adding document: ", e);
-    }
-  };
+  const [tasks, setTasks] = useState(
+    JSON.parse(localStorage.getItem("tasks")) || []
+  );
 
   const auth = getAuth();
   auth.useDeviceLanguage();
 
-  // create user with email
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  const handleTaskSubmit = async (taskDetails) => {
+    taskDetails.uid = user.uid;
+    taskDetails.Done = false;
+    taskDetails.Importance = false;
+    taskDetails.Time = new Date().toLocaleTimeString();
+    taskDetails.Date = new Date().toDateString();
+    taskDetails.timeStamp = serverTimestamp();
+    try {
+      const docRef = await addDoc(collection(db, user.uid), taskDetails);
+      taskDetails._id = docRef.id;
+      tasks.push(taskDetails);
+      setOpen(false);
+    } catch (e) {
+      setError("Error adding task");
+    }
+  };
+
   const createUserByEmail = (email, password, firstName, lastName) => {
     setIsLoading(true);
     return createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
-        console.log(userCredential.user);
         const uid = userCredential.user.uid;
         const name = firstName + " " + lastName;
         const photoURL =
@@ -120,7 +135,6 @@ const useFirebase = () => {
     signOut(auth)
       .then(() => {
         setError("");
-        console.log("Sign out success");
       })
       .catch((error) => {
         setError(error.message);
@@ -134,10 +148,8 @@ const useFirebase = () => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
         setUser(user);
-        console.log(user);
       } else {
         setUser({});
-        console.log(user);
       }
       setIsLoading(false);
     });
@@ -156,12 +168,17 @@ const useFirebase = () => {
     admin,
     setAdmin,
     setModal,
+    tasks,
+    setTasks,
+    open,
+    setOpen,
     loginUserByEmail,
     createUserByEmail,
     socialSignIn,
     signOutUser,
     db,
+    handleTaskSubmit,
   };
-};
+};;
 
 export default useFirebase;
