@@ -1,4 +1,4 @@
-import { Delete } from "@mui/icons-material";
+import { Delete, Restore } from "@mui/icons-material";
 import {
   IconButton,
   Paper,
@@ -12,7 +12,13 @@ import {
   TableRow,
   Tooltip,
 } from "@mui/material";
-import { collection, deleteDoc, doc, getDocs } from "firebase/firestore";
+import {
+  collection,
+  deleteDoc,
+  doc,
+  getDocs,
+  updateDoc,
+} from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import useAuth from "../../Hooks/useAuth";
 
@@ -40,6 +46,13 @@ const Completed = () => {
 
   const handleTaskRemove = async (taskId) => {
     await deleteDoc(doc(db, user.uid, taskId));
+    setTasks(tasks.filter((task) => task._id !== taskId));
+  };
+  const handleTaskRestore = async (taskId) => {
+    const taskRef = doc(db, user.uid, taskId);
+    await updateDoc(taskRef, {
+      Done: false,
+    });
     setTasks(tasks.filter((task) => task._id !== taskId));
   };
 
@@ -76,11 +89,9 @@ const Completed = () => {
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
               <TableRow>
-                <TableCell align="left">Complete</TableCell>
+                <TableCell align="left">Remove</TableCell>
                 <TableCell align="left">Task</TableCell>
-                <TableCell align="right" colSpan={1}>
-                  Added Time
-                </TableCell>
+                <TableCell align="right">Restore</TableCell>
               </TableRow>
             </TableHead>
             {tasks ? (
@@ -102,9 +113,16 @@ const Completed = () => {
                           </IconButton>
                         </Tooltip>
                       </TableCell>
+
                       <TableCell align="left">{task.Task}</TableCell>
                       <TableCell align="right">
-                        {task.Time.slice(0, 5)}
+                        <Tooltip title="Restore Task">
+                          <IconButton
+                            onClick={() => handleTaskRestore(task._id)}
+                          >
+                            <Restore />
+                          </IconButton>
+                        </Tooltip>
                       </TableCell>
                     </TableRow>
                   );
